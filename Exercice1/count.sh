@@ -1,7 +1,39 @@
 #!/usr/bin/bash
 
-CHEMIN=$1
-for d in $CHEMIN; do
-	echo "Location "$(echo $(basename "$d")| cut -d'/' -f 1)":"
-	find . -name $(echo '*'$(basename "$d")'*.ann') | xargs cat | grep Location | wc -l 
-done;
+
+YEAR=0
+TYPE="*"
+
+
+# Get the input options
+
+while getopts ":tac:" option; do
+	case $option in
+		t) # Filtre selon le type donne en argument
+			TYPE=$OPTARG
+			;;
+		a) # Ordonne par annee
+			YEAR=$OPTARG
+			if ! [[ $YEAR =~ ^[0-9]+$ ]]; then
+				echo "Error: Invalid Arguments. The year must be a number"
+				exit 1
+			fi
+			;;
+		\?) # Invalid option
+			echo "Error: Invalid option. Please use -h to see the help"
+			exit;;
+	esac
+done
+
+
+if [ "$YEAR" -eq 0 ]; then
+	YEAR='*'
+fi
+
+echo "$TYPE $YEAR:"
+if [ "$TYPE" != "*" ]
+then
+	find . -name $(echo '*'$YEAR'*.ann') | xargs cat | grep "$TYPE" | wc -l 
+else
+	find . -name $(echo '*'$YEAR'*.ann') | xargs cat | wc -l
+fi
