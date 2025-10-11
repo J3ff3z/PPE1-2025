@@ -147,7 +147,7 @@ while [ "$YEAR" -le "$YEAREND" ]; do
 	then
 		if ! $HAVEMONTHEND
 		then
-			ME=$MONTH
+			ME=12
 		else
 			ME=$MONTHEND
 		fi
@@ -167,16 +167,21 @@ while [ "$YEAR" -le "$YEAREND" ]; do
 		
 		if [ "$TYPE" != "*" ]
 		then
-			ANSWER=$(echo "${ANSWER}" | grep "$TYPE" | wc -l )
+			ANSWER=$(echo "${ANSWER}" | grep "$TYPE" )
 		else
-			ANSWER=$(echo "${ANSWER}" | wc -l )
+			ANSWER=$(echo "${ANSWER}")
 		fi
-		FINALANSWER=$(($FINALANSWER+$ANSWER))
+		FINALANSWER=$(echo "$FINALANSWER""$ANSWER")
 		((MONTH++))
 	done
 	MONTH=1
 		
-	echo "$FINALANSWER"
+	if ! $HAVECOUNT
+	then
+		echo $(echo "$FINALANSWER" | wc -l)
+	else
+		echo $(echo "$FINALANSWER" | awk -F"\t" '{print $3}' | sort | uniq -c | sort -gr | head -n "$COUNT")
+	fi
 	
 	if [ "$YEAR" = "*" ]; then
 		YEAR=0
