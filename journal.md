@@ -76,4 +76,12 @@ do
 done # Fin de la boucle
 ```
 
+# Miniproject
+
+1. Nous n'utilisons pas cat car nous voulons effectuer du traitement sur chacune des lignes, et c'est plus simple pour nous d'utiliser une boucle while dans ce cas
+
+2. Voir code
+
+3. Voir code
+
 
