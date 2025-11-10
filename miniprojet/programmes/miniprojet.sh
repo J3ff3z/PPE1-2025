@@ -16,6 +16,8 @@ fi
 
 COUNT=0
 
+echo "<table><tr><th>Index</th><th>Link</th><th>Code</th><th>Encodage</th><th>Word Count</th><tr>" >> '../tableaux/tableau-fr.html'
+
 while read -r line;
 do
 	RESPONSE=$(curl -s -L -D - "$line") # On fait notre magnifique requete avec redirection pour eviter les 301
@@ -26,6 +28,8 @@ do
 
 	BODY=$(echo "$RESPONSE" | awk 'BEGIN{RS="\r\n\r\n"} {body=$0} END{print body}') #On va chopper le moment ou il y a une ligne vide (Separation headers/body), et on prends jusqu'a la fin du doc
 	WORDCOUNT=$(printf '%s' "$BODY" | lynx -dump -stdin -nolist | wc -w)
-	echo $COUNT'	'${line}'	'$CODE'	'$ENCODAGE'	'$WORDCOUNT >> '../tableaux/tableau-fr.tsv' # Formatage de la ligne
+	echo '<tr><td>'$COUNT'</td><td>'${line}'</td><td>'$CODE'</td><td>'$ENCODAGE'</td><td>'$WORDCOUNT'</td></tr>' >> '../tableaux/tableau-fr.html' # Formatage de la ligne
 	COUNT=$(($COUNT+1))
 done < "$FILE"
+
+echo "</table>" >> '../tableaux/tableau-fr.html'
