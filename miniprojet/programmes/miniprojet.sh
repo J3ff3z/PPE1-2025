@@ -25,7 +25,7 @@ do
 	ENCODAGE=$(echo "${ENCODAGE:8}"| tr -d '\r\n') # On retire les 8 premier caractere "charset=" et le /r/n situe a la fin pour eviter les retours a la ligne
 
 	BODY=$(echo "$RESPONSE" | awk 'BEGIN{RS="\r\n\r\n"} {body=$0} END{print body}') #On va chopper le moment ou il y a une ligne vide (Separation headers/body), et on prends jusqu'a la fin du doc
-	WORDCOUNT=$(echo $BODY|wc -w) # On compte le nombre de mot
+	WORDCOUNT=$(printf '%s' "$BODY" | lynx -dump -stdin -nolist | wc -w)
 	echo $COUNT'	'${line}'	'$CODE'	'$ENCODAGE'	'$WORDCOUNT >> '../tableaux/tableau-fr.tsv' # Formatage de la ligne
 	COUNT=$(($COUNT+1))
 done < "$FILE"
