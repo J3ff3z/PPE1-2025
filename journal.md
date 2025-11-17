@@ -85,3 +85,8 @@ done # Fin de la boucle
 3. Voir code
 
 
+# Miniproject 3
+
+Modification des differents codes pour avoir un affichage Bulma
+J'ai un caractere "0" qui pop sous mon tableau, je sais pas pourquoi
+Le code bash est probablement sous-optimal car il ne prends pas le dernier code HTML recu.
